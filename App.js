@@ -1,7 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
+import * as Sentry from '@sentry/react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  environment: __DEV__ ? 'development' : 'production',
+  sendDefaultPii: true,
+  tracesSampleRate: 1.0, // lower to 0.1-0.2 in production
+});
+
+// TEMPORARY: verification event, remove after confirming in Sentry
+Sentry.captureException(new Error('Sentry verification: first error from SentryDemoApp'));
+
+function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sentry Demo App</Text>
@@ -15,6 +26,8 @@ export default function App() {
     </View>
   );
 }
+
+export default Sentry.wrap(App);
 
 const styles = StyleSheet.create({
   container: {

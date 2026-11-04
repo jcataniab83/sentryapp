@@ -20,6 +20,16 @@
     "web": {
       "bundler": "metro",
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "sentryapp",
+          "organization": "jj-4j"
+        }
+      ]
+    ]
   }
 }
