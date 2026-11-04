@@ -9,9 +9,6 @@ Sentry.init({
   tracesSampleRate: 1.0, // lower to 0.1-0.2 in production
 });
 
-// TEMPORARY: verification event, remove after confirming in Sentry
-Sentry.captureException(new Error('Sentry verification: first error from SentryDemoApp'));
-
 function App() {
   return (
     <View style={styles.container}>
