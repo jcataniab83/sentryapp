@@ -5,10 +5,23 @@ import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
-  environment: __DEV__ ? 'development' : 'production',
-  sendDefaultPii: true,
-  tracesSampleRate: 1.0, // lower to 0.1-0.2 in production
+  release: process.env.EXPO_PUBLIC_SENTRY_RELEASE,
+  dist: process.env.EXPO_PUBLIC_SENTRY_DIST,
+  environment: process.env.EXPO_PUBLIC_SENTRY_ENV ?? 'development',
+  sendDefaultPii: false,
+
+  tracesSampler: ({ name, parentSampled }) => {
+    if (parentSampled !== undefined) return parentSampled ? 1.0 : 0;
+    return __DEV__ ? 1.0 : 0.1; // 10% on prod as a starting point
+  },
+
+  ignoreErrors: [
+    // 'Demo error: Trigger Error button pressed',
+    /^Script error\.?$/,
+  ],
 });
+
+
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
